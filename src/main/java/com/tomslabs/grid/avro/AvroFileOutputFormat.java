@@ -41,6 +41,9 @@ public class AvroFileOutputFormat<T> extends FileOutputFormat<T, Object> {
     private static final String DEFLATE_LEVEL_KEY = org.apache.avro.mapred.AvroOutputFormat.DEFLATE_LEVEL_KEY;
     private static final int DEFAULT_DEFLATE_LEVEL = 1;
 
+    private static final String SYNC_INTERVAL_KEY = org.apache.avro.mapred.AvroOutputFormat.SYNC_INTERVAL_KEY;
+    private static final int DEFAULT_SYNC_INTERVAL = 262144;
+
     public static void setDeflateLevel(Job job, int level) {
         FileOutputFormat.setCompressOutput(job, true);
         job.getConfiguration().setInt(DEFLATE_LEVEL_KEY, level);
@@ -59,6 +62,9 @@ public class AvroFileOutputFormat<T> extends FileOutputFormat<T, Object> {
             int level = config.getInt(DEFLATE_LEVEL_KEY, DEFAULT_DEFLATE_LEVEL);
             writer.setCodec(CodecFactory.deflateCodec(level));
         }
+
+        int syncInterval = config.getInt(SYNC_INTERVAL_KEY, DEFAULT_SYNC_INTERVAL);
+        writer.setSyncInterval(syncInterval);
 
         Path file = getDefaultWorkFile(context, EXT);
         FileSystem fs = file.getFileSystem(config);
