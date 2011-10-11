@@ -70,6 +70,10 @@ public class AvroFileOutputFormat<T> extends FileOutputFormat<T, Object> {
         int syncInterval = config.getInt(SYNC_INTERVAL_KEY, DEFAULT_SYNC_INTERVAL);
         writer.setSyncInterval(syncInterval);
 
+        String filename = getUniqueFile(context, String.format("avro-stripped-body-%s",
+                DateUtility.now("yyyyMMdd.HHmmss")), EXT);
+        setOutputName(context, filename);
+
         Path file = getDefaultWorkFile(context, EXT);
         FileSystem fs = file.getFileSystem(config);
 
