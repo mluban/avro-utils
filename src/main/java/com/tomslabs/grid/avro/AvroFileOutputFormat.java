@@ -49,6 +49,10 @@ public class AvroFileOutputFormat<T> extends FileOutputFormat<T, Object> {
         job.getConfiguration().setInt(DEFLATE_LEVEL_KEY, level);
     }
 
+    public static void setSyncInterval(Job job, int interval) {
+        job.getConfiguration().setInt(SYNC_INTERVAL_KEY, interval);
+    }
+
     @Override
     public RecordWriter<T, Object> getRecordWriter(TaskAttemptContext context) throws IOException, InterruptedException {
         Configuration config = context.getConfiguration();
